@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Code styled according to pycodestyle
 
@@ -14,12 +14,12 @@ __status__ = "Production"
 
 
 '''
+mouse clicks are saved at PostgreSQL
+keys pressed are saved at MongoDB
+
 Code to count mouse clicks from buttons: Left, Middle and Right
 Each click is compounding of two movements: Press and Release, then
 two register are computed, also work as a Keylogger
-
-mouse clicks are saved at PostgreSQL
-keys pressed are saved at MongoDB
 
 Relational concept <----------> MongoDB equivalent
       Database                       Database
@@ -46,13 +46,37 @@ from datetime import datetime
 from security_conections_data import admpostgresql_host1
 from security_conections_data import admubuntuiot_host1
 from security_conections_data import mongodb_host1
+
+try:
+    import pynput
+
+except ImportError:
+    sys.exit("""You need pynput
+        install it from http://pypi.python.org/
+        or run pip3 install pynput""")
+
 from pynput import keyboard
 from pynput import mouse
 from pynput.mouse import Listener as MouseListener
 from pynput.mouse import Button
-import psycopg2
+
+try:
+    import psycopg2
+
+except ImportError:
+    sys.exit("""You need psycopg2
+        install it from http://pypi.python.org/
+        or run pip3 install psycopg2""")
+
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-import pymongo
+
+try:
+    import pymongo
+
+except ImportError:
+    sys.exit("""You need pymongo
+        install it from http://pypi.python.org/
+        or run pip3 install pymongo""")
 
 
 def create_db_ubuntuiot():
@@ -405,10 +429,6 @@ def on_press(key):
 
         except Exception as e:
             raise Exception("ErrOn_Press-2 : {0}".format(e))
-
-        finally:
-            if conn2:
-                conn2.close()
 
     finally:
         if conn2:
