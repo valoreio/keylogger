@@ -452,10 +452,14 @@ def listening():
         raise Exception("ErrListening-1 : {0}".format(e))
 
 
-if __name__ == '__main__':
+def main():
     create_db_ubuntuiot()
     create_table_clickmouse()
     insert_first_clickmouse()
     show_all_records()
     listening()
     show_all_records()
+
+
+if __name__ == '__main__':
+    main()
