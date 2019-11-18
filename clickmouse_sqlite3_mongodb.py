@@ -1,7 +1,4 @@
-#!/usr/bin/env python3.6
-# -*- coding: utf-8 -*-
-# Code styled according to pycodestyle
-
+#!/usr/bin/env python3
 '''
 Code to count mouse clicks from buttons: Left, Middle and Right
 Each click is compounding of two movements: Press and Release, then
@@ -31,19 +28,48 @@ Relational concept <----------> MongoDB equivalent
                                      ACID in version 4.0
 '''
 
+# -*- coding: utf-8 -*-
+# Code styled according to pycodestyle
+# Code parsed, checked possible errors according to pyflakes and pylint
+
+
+import sys
 from datetime import datetime
-from security_conections_data import sqlite3_host1
-from security_conections_data import mongodb_host1
+
+try:
+    import pynput
+
+except ImportError:
+    sys.exit("""You need pynput
+        install it from http://pypi.python.org/
+        or run pip3 install pynput""")
+
 from pynput import keyboard
 from pynput import mouse
 from pynput.mouse import Listener as MouseListener
 from pynput.mouse import Button
-import sqlite3
-import pymongo
+
+try:
+    import sqlite3
+
+except ImportError:
+    sys.exit("""You need sqlite3
+        install it from http://pypi.python.org/
+        or run pip3 install sqlite3""")
+
+try:
+    import pymongo
+
+except ImportError:
+    sys.exit("""You need pymongo
+        install it from http://pypi.python.org/
+        or run pip3 install pymongo""")
+
+from security_conections_data import sqlite3_host1
+from security_conections_data import mongodb_host1
 
 
 def create_db_clickmouse():
-    # CREATE DATABASE SQLITE
     '''
     O SQLite é um database de apenas um arquivo.
     Informando os dados de conexão e ao criar uma tabela,
@@ -64,11 +90,11 @@ def create_db_clickmouse():
             );
             """)
 
-        except Exception as e:
-            print("ErrCurCreateTable-1 : {0}".format(e))
+        except Exception as err:
+            print("ErrCurCreateTable-1 : {0}".format(err))
 
-    except Exception as e:
-        print("ErrCurCreateTable-2 : {0}".format(e))
+    except Exception as err:
+        print("ErrCurCreateTable-2 : {0}".format(err))
 
     finally:
         if conn:
@@ -76,7 +102,9 @@ def create_db_clickmouse():
 
 
 def insert_first_clickmouse():
-    # INSERT THE FIRST ONE
+    '''
+    INSERT THE FIRST ONE
+    '''
     try:
         conn = sqlite3.connect(sqlite3_host1)
         cursor = conn.cursor()
@@ -95,12 +123,12 @@ def insert_first_clickmouse():
 
             conn.commit()
 
-        except Exception as e:
+        except Exception:
             pass
-            # print("ErrInsert-1 : {0}".format(e))
+            # print("ErrInsert-1 : {0}".format(err))
 
-    except Exception as e:
-        print("ErrInsert-2 : {0}".format(e))
+    except Exception as err:
+        print("ErrInsert-2 : {0}".format(err))
 
     finally:
         if conn:
@@ -108,7 +136,9 @@ def insert_first_clickmouse():
 
 
 def show_all_records():
-    # Show all records inserted
+    '''
+    Show all records inserted
+    '''
     try:
         conn = sqlite3.connect(sqlite3_host1)
         cursor = conn.cursor()
@@ -157,11 +187,11 @@ def show_all_records():
 
             print('+---------------------------------------------+')
 
-        except Exception as e:
-            print("ErrSelectAll-1 : {0}".format(e))
+        except Exception as err:
+            print("ErrSelectAll-1 : {0}".format(err))
 
-    except Exception as e:
-        print("ErrSelectAll-2 : {0}".format(e))
+    except Exception as err:
+        print("ErrSelectAll-2 : {0}".format(err))
 
     finally:
         if conn:
@@ -169,7 +199,9 @@ def show_all_records():
 
 
 def clicked(x, y, button, pressed):
-
+    '''
+    Control clicks
+    '''
     if button == mouse.Button.left:
         # Left Button was clicked
         try:
@@ -201,8 +233,8 @@ def clicked(x, y, button, pressed):
                     create_db_clickmouse()
                     insert_first_clickmouse()
 
-            except Exception as e:
-                print("ErrSelect_Left-1 : {0}".format(e))
+            except Exception as err:
+                print("ErrSelect_Left-1 : {0}".format(err))
 
             try:
                 conn = sqlite3.connect(sqlite3_host1)
@@ -216,11 +248,11 @@ def clicked(x, y, button, pressed):
 
                 conn.commit()
 
-            except Exception as e:
-                print("ErrUpdate_Left-2 : {0}".format(e))
+            except Exception as err:
+                print("ErrUpdate_Left-2 : {0}".format(err))
 
-        except Exception as e:
-            print("ErrUpdate_Left-3 : {0}".format(e))
+        except Exception as err:
+            print("ErrUpdate_Left-3 : {0}".format(err))
 
         finally:
             if conn:
@@ -257,8 +289,8 @@ def clicked(x, y, button, pressed):
                     create_db_clickmouse()
                     insert_first_clickmouse()
 
-            except Exception as e:
-                print("ErrSelect_Middle-1 : {0}".format(e))
+            except Exception as err:
+                print("ErrSelect_Middle-1 : {0}".format(err))
 
             try:
                 conn = sqlite3.connect(sqlite3_host1)
@@ -272,11 +304,11 @@ def clicked(x, y, button, pressed):
 
                 conn.commit()
 
-            except Exception as e:
-                print("ErrUpdate_Middle-2 : {0}".format(e))
+            except Exception as err:
+                print("ErrUpdate_Middle-2 : {0}".format(err))
 
-        except Exception as e:
-            print("ErrUpdate_Middle-3 : {0}".format(e))
+        except Exception as err:
+            print("ErrUpdate_Middle-3 : {0}".format(err))
 
         finally:
             if conn:
@@ -313,8 +345,8 @@ def clicked(x, y, button, pressed):
                     create_db_clickmouse()
                     insert_first_clickmouse()
 
-            except Exception as e:
-                print("ErrSelect_Right-1 : {0}".format(e))
+            except Exception as err:
+                print("ErrSelect_Right-1 : {0}".format(err))
 
             try:
                 conn = sqlite3.connect(sqlite3_host1)
@@ -328,11 +360,11 @@ def clicked(x, y, button, pressed):
 
                 conn.commit()
 
-            except Exception as e:
-                print("ErrUpdate_Right-2 : {0}".format(e))
+            except Exception as err:
+                print("ErrUpdate_Right-2 : {0}".format(err))
 
-        except Exception as e:
-            print("ErrUpdate_Right-3 : {0}".format(e))
+        except Exception as err:
+            print("ErrUpdate_Right-3 : {0}".format(err))
 
         finally:
             if conn:
@@ -340,7 +372,9 @@ def clicked(x, y, button, pressed):
 
 
 def on_press(key):
-    # INSERT DOCUMENT INTO MONGODB
+    '''
+    INSERT DOCUMENT INTO MONGODB
+    '''
     try:
         # Testa o atributo do caracter,
         # se der erro já pula tudo sem perder tempo
@@ -365,14 +399,14 @@ def on_press(key):
             if not result.acknowledged:
                 raise Exception("Error during insert of MongoDB Document on_press def")
 
-        except Exception as e:
-            print("ErrOn_Press-1 : {0}".format(e))
+        except Exception as err:
+            print("ErrOn_Press-1 : {0}".format(err))
 
         finally:
             if conn2:
                 conn2.close()
 
-    except AttributeError as e:
+    except AttributeError:
         # special key pressed
         try:
             conn2 = pymongo.MongoClient(**mongodb_host1)
@@ -393,8 +427,8 @@ def on_press(key):
             if not result.acknowledged:
                 raise Exception("Error during insert of MongoDB Document Special Key Pressed")
 
-        except Exception as e:
-            print("ErrOn_Press-2 : {0}".format(e))
+        except Exception as err:
+            print("ErrOn_Press-2 : {0}".format(err))
 
     finally:
         if conn2:
@@ -402,21 +436,26 @@ def on_press(key):
 
 
 def on_release(key):
+    '''
+    release when ESC key pressed
+    '''
     if key == keyboard.Key.esc:
         # Stop listener
         return False
 
 
 def listening():
-
+    '''
+    LISTENER
+    '''
     try:
         with MouseListener(on_click=clicked) as listener:
             with keyboard.Listener(on_press=on_press,
                                    on_release=on_release) as listener:
                 listener.join()
 
-    except Exception as e:
-        print("ErrListening-1 : {0}".format(e))
+    except Exception as err:
+        print("ErrListening-1 : {0}".format(err))
 
 
 if __name__ == '__main__':
